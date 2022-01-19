@@ -1,0 +1,10 @@
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('778018541-9', 'Demeter', 'Breckon');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('692719708-7', 'Xena', 'Gilardone');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('435986214-8', 'Alleyn', 'Habbergham');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('140590399-6', 'Dolli', 'Jeaycock');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('299933376-5', 'Alisun', 'Giametti');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('192191584-6', 'Sydelle', 'Edinborough');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('840094190-X', 'Debora', 'Guidelli');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('938334469-5', 'Wilmette', 'Skitterel');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('824958542-9', 'Dwight', 'Uren');
+insert into g4_propietario (d_rut, d_nombre, d_apellido) values ('583695417-8', 'Elia', 'Ollivierre');

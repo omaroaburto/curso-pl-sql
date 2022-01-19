@@ -1,0 +1,70 @@
+CREATE TABLE EMP (COD_EMP INTEGER PRIMARY KEY, NOMBRE VARCHAR2(10), SALARIO INTEGER, ANO_ING INTEGER, SEXO VARCHAR2(10), COD_DEP NUMBER)
+CREATE TABLE DEPTO (COD_DEPTO INTEGER PRIMARY KEY, NOMBRE_DEPTO VARCHAR2(10))
+INSERT INTO DEPTO VALUES (1, 'SISTEMAS');
+INSERT INTO DEPTO VALUES (2, 'AUDITORIA');
+
+INSERT INTO EMP VALUES (11,'MARIA',300, 2000, 'F',1);
+INSERT INTO EMP VALUES (12,'JUAN',500, 2010, 'M',2);
+
+--Cree un procedimiento almacenado que permita generar una estadísticas de los empleados, 
+--considerando la cantidad de mujeres y hombres por cada departamento
+
+CREATE OR REPLACE PROCEDURE SP_SEXO_DEPTO IS
+    CURSOR C_SEXO IS
+        SELECT NOMBRE_DEPTO, SEXO, COUNT(1)
+        FROM EMP E INNER JOIN DEPTO D ON E.COD_DEP= D.COD_DEPTO
+        GROUP BY NOMBRE_DEPTO, SEXO;
+    DEPA  VARCHAR2(10);
+    SEX   VARCHAR2(10);
+    CANT INTEGER;
+BEGIN
+     OPEN C_SEXO;
+     FETCH C_SEXO INTO DEPA, SEX, CANT;
+     WHILE C_SEXO%FOUND
+     LOOP
+        DBMS_OUTPUT.PUT_LINE ('DEPARTAMENTO '|| DEPA || ' TIENE ' || CANT|| ' ' || SEX );
+        FETCH C_SEXO INTO DEPA, SEX, CANT;
+    END LOOP;
+    CLOSE C_SEXO;
+END;
+
+EXECUTE SP_SEXO_DEPTO;
+
+BEGIN 
+SP_SEXO_DEPTO();
+END;
+
+SET SERVEROUTPUT ON
+
+--Cree un procedimiento almacenado que imprima por pantalla la cantidad en dinero que debe 
+--desembolsar cada departamento y la empresa por el concepto de salarios.
+
+
+CREATE OR REPLACE PROCEDURE SP_SALARIO_TOTAL_DEPTO IS
+CURSOR C_SALARIO IS
+    SELECT NOMBRE_DEPTO, SUM(SALARIO)
+    FROM EMP E INNER JOIN DEPTO D ON E.COD_DEP= D.COD_DEPTO
+    GROUP BY NOMBRE_DEPTO;
+DEPA VARCHAR2(10);
+TOTAL_DEPA INTEGER :=0;
+TOTAL_EMP INTEGER :=0;
+
+BEGIN
+  OPEN C_SALARIO;
+     FETCH C_SALARIO INTO DEPA, TOTAL_DEPA;
+     WHILE C_SALARIO%FOUND
+     LOOP
+        DBMS_OUTPUT.PUT_LINE ('DEPARTAMENTO '|| DEPA || ' GASTA ' || TOTAL_DEPA );
+        TOTAL_EMP := TOTAL_EMP+TOTAL_DEPA;
+        FETCH C_SALARIO INTO DEPA, TOTAL_DEPA;
+    END LOOP;
+    CLOSE C_SALARIO;
+    DBMS_OUTPUT.PUT_LINE ('TOTAL EMPRESA ' || TOTAL_EMP );
+END;
+
+EXECUTE SP_SALARIO_TOTAL_DEPTO;
+
+
+
+--Cree un procedimiento almacenado que permita calcular el total a pagar a 
+--las AFP por conceptos de imposiciones, considerando que es el 10% de los salarios

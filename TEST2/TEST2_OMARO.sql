@@ -1,4 +1,4 @@
---creaciÛn de tablas
+--creaci√≥n de tablas
 CREATE TABLE C2_FACTURA(
     FAC_CODIGO INTEGER,
     FAC_FECHA DATE NOT NULL,
@@ -69,7 +69,7 @@ VALUES(1,'OMARO ABURTO');
 
 INSERT
 INTO C2_CLIENTE(CLI_CODIGO, CLI_NOMBRE)
-VALUES(2,'PEDRO ACU—A');
+VALUES(2,'PEDRO ACU√ëA');
 
 INSERT
 INTO C2_FACTURA(FAC_CODIGO, FAC_FECHA)
@@ -88,8 +88,9 @@ INTO C2_COMPRA(PRD_CODIGO, CLI_CODIGO, FAC_CODIGO,COM_CANTIDAD)
 VALUES (2,2,2,1);
 /*
 a)	Cree un programa en PL/SQL que permita calcular el valor del IVA (19% del total de la compra) 
-de una factura cuyo cÛdigo se ingrese por teclado. Debe imprimir por pantalla el valor calculado (25 ptos).
+de una factura cuyo c√≥digo se ingrese por teclado. Debe imprimir por pantalla el valor calculado (25 ptos).
 */
+SET SERVEROUTPUT ON;
 DECLARE
     CURSOR  C_IVA(COD_FACT NUMBER) IS
         SELECT F.FAC_CODIGO, SUM(C.COM_CANTIDAD*P.PRD_PRECIO) 
@@ -99,13 +100,14 @@ DECLARE
         WHERE F.FAC_CODIGO = COD_FACT
         GROUP BY F.FAC_CODIGO;
     VALOR_TOTAL NUMBER;
+    V_VALOR number := &valor;
     COD NUMBER;
     IVA NUMBER;
-BEGIN
-    OPEN C_IVA(2); 
+BEGIN 
+    OPEN C_IVA(V_VALOR); 
         FETCH C_IVA INTO COD, VALOR_TOTAL; 
         IVA := VALOR_TOTAL*19/100;
-        DBMS_OUTPUT.PUT_LINE('EL IVA DE LA FACTURA N∞' || COD || ' ES : ' || IVA);
+        DBMS_OUTPUT.PUT_LINE('EL IVA DE LA FACTURA N¬∞' || COD || ' ES : ' || IVA);
         FETCH C_IVA INTO COD, VALOR_TOTAL;
     CLOSE C_IVA;
 END;
@@ -116,10 +118,10 @@ END;
 
 /*
 b)	Cree un programa en PL/SQL que permita conocer la cantidad de clientes frecuentes 
-y espor·dicos que se tienen. Los clientes frecuentes son quienes hayan comprado $500.000.- 
-o m·s en total, durante el mes de octubre. Los clientes espor·dicos son quienes han realizado 
+y espor√°dicos que se tienen. Los clientes frecuentes son quienes hayan comprado $500.000.- 
+o m√°s en total, durante el mes de octubre. Los clientes espor√°dicos son quienes han realizado 
 compras en el mes de octubre inferior a $500.000.-. Se debe mostrar por pantalla la cantidad 
-de clientes frecuentes y espor·dicos (25ptos).
+de clientes frecuentes y espor√°dicos (25ptos).
 */
 
 CREATE VIEW  V_COMPRAS_OCTUBRE AS(
@@ -178,7 +180,7 @@ END;
 INSERT
 INTO C2_PRODUCTO(PRD_CODIGO, PRD_NOMBRE,PRD_PRECIO,PRO_RUT) 
 VALUES (3, 'AUTO', 0, '17000309-8' );
-/*d)	Cree un trigger que genere autom·ticamente el cÛdigo de la factura,
+/*d)	Cree un trigger que genere autom√°ticamente el c√≥digo de la factura,
 el que debe ser consecutivo. La fecha debe ser similar a la del sistema (25 ptos). 
 -- OBTENER FECHA ACTUAL SISTEMA SELECT TO_CHAR(SYSDATE,'DD-MM-YYYY') FROM DUAL */
 --SE CREA UNA SECUENCIA
@@ -186,7 +188,7 @@ CREATE SEQUENCE AUMENTAR_PK
 START WITH 1
 INCREMENT BY 1;
 
---CREA UN TRIGGER PARA AUMENTAR DE FORMA AUTOM¡TICA LA PK DE FACTURA
+--CREA UN TRIGGER PARA AUMENTAR DE FORMA AUTOM√ÅTICA LA PK DE FACTURA
 CREATE OR REPLACE TRIGGER TR_AUTOCRIMENT_PK_C2_FACTURA
 BEFORE INSERT ON C2_FACTURA
 FOR EACH ROW
